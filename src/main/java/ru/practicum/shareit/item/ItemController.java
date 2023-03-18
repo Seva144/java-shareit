@@ -26,7 +26,7 @@ public class ItemController {
 
     @PostMapping
     public ItemDto createItem(@Valid @RequestBody ItemDto item, @RequestHeader(value = "X-Sharer-User-Id") String userId)
-            throws NotFoundException{
+            throws NotFoundException {
         int owner = Integer.parseInt(userId);
         return itemService.createItem(item, owner);
     }

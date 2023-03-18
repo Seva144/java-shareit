@@ -35,12 +35,12 @@ public class UserService {
     public User patchUser(Integer id, Map<String, Object> fields) throws NotFoundException {
         List<User> usersWithoutUserId = getAllUsers()
                 .stream()
-                .filter(user -> user.getId()!=id)
+                .filter(user -> user.getId() != id)
                 .collect(Collectors.toList());
 
         User excitingUser = userStorage.getUser(id);
         fields.forEach((key, value) -> {
-            if(Objects.equals(key, "email")){
+            if (Objects.equals(key, "email")) {
                 try {
                     validEmail(String.valueOf(value), usersWithoutUserId);
                 } catch (ValidationException e) {
