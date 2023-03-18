@@ -1,11 +1,11 @@
 package ru.practicum.shareit.exceptions;
 
 public class ValidationException extends Exception {
-    public ValidationException(){
+    public ValidationException() {
         super();
     }
 
-    public ValidationException(String message){
+    public ValidationException(String message) {
         super(message);
     }
 }

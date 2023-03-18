@@ -3,7 +3,6 @@ package ru.practicum.shareit.item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.exceptions.BabRequestException;
 import ru.practicum.shareit.exceptions.ErrorResponse;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
@@ -27,7 +26,7 @@ public class ItemController {
 
     @PostMapping
     public ItemDto createItem(@Valid @RequestBody ItemDto item, @RequestHeader(value = "X-Sharer-User-Id") String userId)
-            throws NotFoundException, BabRequestException {
+            throws NotFoundException{
         int owner = Integer.parseInt(userId);
         return itemService.createItem(item, owner);
     }
@@ -48,7 +47,7 @@ public class ItemController {
 
     @GetMapping("/search")
     public List<ItemDto> searchItemByText(@RequestParam Optional<String> text) throws NotFoundException {
-        if(text.isEmpty()) throw new NotFoundException();
+        if (text.isEmpty()) throw new NotFoundException();
         else return itemService.searchItemsByText(text.get());
     }
 
@@ -73,13 +72,4 @@ public class ItemController {
                 "User not found", e.getMessage()
         );
     }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleFound(final BabRequestException e) {
-        return new ErrorResponse(
-                "The field is not filled", e.getMessage()
-        );
-    }
-
 }

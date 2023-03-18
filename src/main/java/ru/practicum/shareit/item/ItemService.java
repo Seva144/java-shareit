@@ -3,7 +3,6 @@ package ru.practicum.shareit.item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
-import ru.practicum.shareit.exceptions.BabRequestException;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
@@ -39,9 +38,7 @@ public class ItemService {
                             item.getName().toLowerCase().contains(text.toLowerCase()) |
                                     item.getDescription().toLowerCase().contains(text.toLowerCase()))
                     .filter(item -> String.valueOf(item.isAvailable()).equals("true"))
-                    .forEach(item -> {
-                        itemsDto.add(itemDtoBuild(item));
-                    });
+                    .forEach(item -> itemsDto.add(itemDtoBuild(item)));
             return itemsDto;
         }
     }
@@ -51,9 +48,7 @@ public class ItemService {
         itemStorage.getAllItems()
                 .stream()
                 .filter(item -> item.getOwner() == id)
-                .forEach(item -> {
-                    itemsDto.add(itemDtoBuild(item));
-                });
+                .forEach(item -> itemsDto.add(itemDtoBuild(item)));
         return itemsDto;
     }
 

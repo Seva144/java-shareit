@@ -1,9 +1,6 @@
 package ru.practicum.shareit.item.dto;
 
-import lombok.Builder;
 import lombok.Data;
-import org.springframework.lang.NonNull;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 

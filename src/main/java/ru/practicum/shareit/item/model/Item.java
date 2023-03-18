@@ -2,7 +2,6 @@ package ru.practicum.shareit.item.model;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 
 @Data
 public class Item {
@@ -20,37 +19,27 @@ public class Item {
             newItem = new Item();
         }
 
-        public Builder withId(int id){
-            newItem.id = id;
-            return this;
-        }
-
-        public Builder withName(String name){
+        public Builder withName(String name) {
             newItem.name = name;
             return this;
         }
 
-        public Builder withDescription(String description){
+        public Builder withDescription(String description) {
             newItem.description = description;
             return this;
         }
 
-        public Builder withAvailable(boolean available){
+        public Builder withAvailable(boolean available) {
             newItem.available = available;
             return this;
         }
 
-        public Builder withOwner(int owner){
+        public Builder withOwner(int owner) {
             newItem.owner = owner;
             return this;
         }
 
-        public Builder withRequest(int request){
-            newItem.request = request;
-            return this;
-        }
-
-        public Item build(){
+        public Item build() {
             return newItem;
         }
     }

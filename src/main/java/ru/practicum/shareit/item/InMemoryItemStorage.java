@@ -1,13 +1,11 @@
 package ru.practicum.shareit.item;
 
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class InMemoryItemStorage implements ItemStorage {
@@ -31,28 +29,12 @@ public class InMemoryItemStorage implements ItemStorage {
         return item;
     }
 
-//    @Override
-//    public Item patchItem(int idItem, Map<String, Object> fields) {
-//        if(items.containsKey(id)){
-//            items.get(id).setName(item.getName());
-//            items.get(id).setDescription(item.getName());
-//            items.get(id).setAvailable(item.isAvailable());
-//            return items.get(id);
-//        } else {
-//            throw new RuntimeException();
-//        }
-//    }
-
     @Override
-    public Item getItem(int idItem){
-        if(items.containsKey(id)){
+    public Item getItem(int idItem) {
+        if (items.containsKey(id)) {
             return items.get(id);
         } else {
             throw new RuntimeException();
         }
     }
-
-
-
-
 }

@@ -47,8 +47,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable("id") Integer id){
-       userService.deleteUser(id);
+    public void deleteUser(@PathVariable("id") Integer id) {
+        userService.deleteUser(id);
     }
 
     @ExceptionHandler
@@ -61,7 +61,7 @@ public class UserController {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleFound(final NotFoundException e){
+    public ErrorResponse handleFound(final NotFoundException e) {
         return new ErrorResponse(
                 "User not found", e.getMessage()
         );
