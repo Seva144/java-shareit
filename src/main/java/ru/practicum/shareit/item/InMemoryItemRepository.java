@@ -8,12 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 
 @Component
-public class InMemoryItemStorage implements ItemStorage {
+public class InMemoryItemRepository implements ItemRepository {
 
-    private final HashMap<Integer, Item> items = new HashMap<>();
-    private static int id;
+    private final HashMap<Long, Item> items = new HashMap<>();
+    private static long id;
 
-    public int generateId() {
+    public long generateId() {
         return ++id;
     }
 
@@ -30,7 +30,7 @@ public class InMemoryItemStorage implements ItemStorage {
     }
 
     @Override
-    public Item getItem(int idItem) {
+    public Item getItem(long idItem) {
         if (items.containsKey(id)) {
             return items.get(id);
         } else {

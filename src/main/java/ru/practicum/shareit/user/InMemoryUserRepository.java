@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 
 @Component
-public class InMemoryUserStorage implements UserStorage {
+public class InMemoryUserRepository implements UserRepository {
 
-    private final HashMap<Integer, User> users = new HashMap<>();
-    private static int id;
+    private final HashMap<Long, User> users = new HashMap<>();
+    private static long id;
 
-    public int generateId() {
+    public long generateId() {
         return ++id;
     }
 
@@ -30,22 +30,13 @@ public class InMemoryUserStorage implements UserStorage {
         return user;
     }
 
-
     @Override
-    public User getUser(int id) throws NotFoundException {
-        if (users.containsKey(id)) {
-            return users.get(id);
-        } else {
-            throw new NotFoundException();
-        }
+    public User getUser(long id) {
+        return users.get(id);
     }
 
     @Override
-    public void deleteUser(int id) {
-        if (users.containsKey(id)) {
-            users.remove(id);
-        } else {
-            throw new RuntimeException();
-        }
+    public void deleteUser(long id) {
+        users.remove(id);
     }
 }

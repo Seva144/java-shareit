@@ -6,7 +6,7 @@ import org.springframework.util.ReflectionUtils;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.UserStorage;
+import ru.practicum.shareit.user.UserRepository;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -14,17 +14,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-
 @Service
 @Slf4j
 public class ItemService {
 
-    private final ItemStorage itemStorage;
-    private final UserStorage userStorage;
+    private final ItemRepository itemRepository;
+    private final UserRepository userRepository;
 
-    public ItemService(ItemStorage itemStorage, UserStorage userStorage) {
-        this.itemStorage = itemStorage;
-        this.userStorage = userStorage;
+    public ItemService(ItemRepository itemStorage, UserRepository userStorage) {
+        this.itemRepository = itemStorage;
+        this.userRepository = userStorage;
     }
 
     public List<ItemDto> searchItemsByText(String text) {
@@ -32,42 +31,36 @@ public class ItemService {
             return new ArrayList<>();
         } else {
             List<ItemDto> itemsDto = new ArrayList<>();
-            itemStorage.getAllItems()
+            itemRepository.getAllItems()
                     .stream()
                     .filter(item ->
                             item.getName().toLowerCase().contains(text.toLowerCase()) |
                                     item.getDescription().toLowerCase().contains(text.toLowerCase()))
                     .filter(item -> String.valueOf(item.isAvailable()).equals("true"))
-                    .forEach(item -> itemsDto.add(itemDtoBuild(item)));
+                    .forEach(item -> itemsDto.add(ItemMapper.mapToDto(item)));
             return itemsDto;
         }
     }
 
-    public List<ItemDto> searchItemByUserId(int id) {
+    public List<ItemDto> searchItemByUserId(long id) {
         List<ItemDto> itemsDto = new ArrayList<>();
-        itemStorage.getAllItems()
+        itemRepository.getAllItems()
                 .stream()
                 .filter(item -> item.getOwner() == id)
-                .forEach(item -> itemsDto.add(itemDtoBuild(item)));
+                .forEach(item -> itemsDto.add(ItemMapper.mapToDto(item)));
         return itemsDto;
     }
 
-    public ItemDto createItem(ItemDto itemDto, int owner) throws NotFoundException {
+    public ItemDto createItem(long owner, ItemDto itemDto) throws NotFoundException {
         validUser(owner);
-        Item item = new Item.Builder()
-                .withName(itemDto.getName())
-                .withDescription(itemDto.getDescription())
-                .withAvailable(itemDto.getAvailable())
-                .withOwner(owner)
-                .build();
-        itemStorage.createItem(item);
+        Item item = itemRepository.createItem(ItemMapper.mapToModel(owner, itemDto));
         return getItem(item.getId());
     }
 
-    public ItemDto patchItem(int idItem, Map<String, Object> fields, int idUser) throws NotFoundException {
+    public ItemDto patchItem(long idItem, Map<String, Object> fields, long idUser) throws NotFoundException {
         validUser(idUser);
-        if (itemStorage.getItem(idItem).getOwner() != idUser) throw new NotFoundException();
-        Item excitingItem = itemStorage.getItem(idItem);
+        if (itemRepository.getItem(idItem).getOwner() != idUser) throw new NotFoundException();
+        Item excitingItem = itemRepository.getItem(idItem);
         fields.forEach((key, value) -> {
             Field field = ReflectionUtils.findField(Item.class, key);
             Objects.requireNonNull(field).setAccessible(true);
@@ -76,20 +69,11 @@ public class ItemService {
         return getItem(idItem);
     }
 
-    public ItemDto getItem(int idItem) {
-        return itemDtoBuild(itemStorage.getItem(idItem));
+    public ItemDto getItem(long idItem) {
+        return ItemMapper.mapToDto(itemRepository.getItem(idItem));
     }
 
-    public void validUser(int id) throws NotFoundException {
-        if (userStorage.getUser(id) == null) throw new NotFoundException();
-    }
-
-    public ItemDto itemDtoBuild(Item item) {
-        return new ItemDto.Builder()
-                .withId(item.getId())
-                .withName(item.getName())
-                .withDescription(item.getDescription())
-                .withAvailable(item.isAvailable())
-                .build();
+    public void validUser(long id) throws NotFoundException {
+        if (userRepository.getUser(id) == null) throw new NotFoundException();
     }
 }
