@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+
     public UserService(UserRepository userStorage) {
         this.userRepository = userStorage;
     }
