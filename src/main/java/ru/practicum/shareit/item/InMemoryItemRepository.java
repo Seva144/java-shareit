@@ -31,10 +31,6 @@ public class InMemoryItemRepository implements ItemRepository {
 
     @Override
     public Item getItem(long idItem) {
-        if (items.containsKey(id)) {
-            return items.get(id);
-        } else {
-            throw new RuntimeException();
-        }
+        return items.get(id);
     }
 }

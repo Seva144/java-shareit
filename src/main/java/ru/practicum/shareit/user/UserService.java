@@ -2,13 +2,11 @@ package ru.practicum.shareit.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,11 +21,10 @@ public class UserService {
     }
 
     public List<UserDto> getAllUsers() {
-        List<UserDto> users = new ArrayList<>();
-        userRepository
-                .getAllUsers()
-                .forEach(user -> users.add(UserMapper.mapToDto(user)));
-        return users;
+        return userRepository.getAllUsers()
+                .stream()
+                .map(UserMapper::mapToDto)
+                .collect(Collectors.toList());
     }
 
     public UserDto createUser(UserDto userDto) throws ValidationException, NotFoundException {
@@ -45,23 +42,14 @@ public class UserService {
 
         validEmail(userDto.getEmail(), usersWithoutUserId);
 
-        Map<String, Object> fields = new HashMap<>();
-        if (userDto.getName() != null) fields.put("name", userDto.getName());
-        if (userDto.getEmail() != null) fields.put("email", userDto.getEmail());
+        if (userDto.getName() != null) userRepository.getUser(id).setName(userDto.getName());
+        if (userDto.getEmail() != null) userRepository.getUser(id).setEmail(userDto.getEmail());
 
-        User excitingUser = userRepository.getUser(id);
-        fields.forEach((key, value) -> {
-            Field field = ReflectionUtils.findField(User.class, key);
-            Objects.requireNonNull(field).setAccessible(true);
-            ReflectionUtils.setField(field, excitingUser, value);
-        });
-        User user = userRepository.getUser(id);
-        return UserMapper.mapToDto(user);
+        return getUser(id);
     }
 
     public UserDto getUser(long id) throws NotFoundException {
-        User user = userRepository.getUser(id);
-        return UserMapper.mapToDto(user);
+        return UserMapper.mapToDto(userRepository.getUser(id));
     }
 
     public void deleteUser(long id) {

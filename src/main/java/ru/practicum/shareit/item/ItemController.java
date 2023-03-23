@@ -7,8 +7,6 @@ import ru.practicum.shareit.item.dto.ItemDto;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/items")
@@ -28,10 +26,10 @@ public class ItemController {
     }
 
     @PatchMapping("/{idItem}")
-    public ItemDto patchItem(@PathVariable("idItem") Long idItem, @RequestBody Map<String, Object> fields,
+    public ItemDto patchItem(@PathVariable("idItem") Long idItem, @RequestBody ItemDto itemDto,
                              @RequestHeader(value = "X-Sharer-User-Id") Long owner)
             throws NotFoundException {
-        return itemService.patchItem(idItem, fields, owner);
+        return itemService.patchItem(idItem, itemDto, owner);
     }
 
     @GetMapping("/{idItem}")
@@ -40,8 +38,8 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    public List<ItemDto> searchItemByText(@RequestParam Optional<String> text) {
-        return itemService.searchItemsByText(text.get());
+    public List<ItemDto> searchItemByText(@RequestParam String text) {
+        return itemService.searchItemsByText(text);
     }
 
     @GetMapping
