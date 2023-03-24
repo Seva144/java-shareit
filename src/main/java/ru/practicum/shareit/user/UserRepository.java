@@ -1,6 +1,5 @@
 package ru.practicum.shareit.user;
 
-import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
@@ -11,7 +10,7 @@ public interface UserRepository {
 
     User createUser(User user);
 
-    User getUser(long id) throws NotFoundException;
+    User getUser(long id);
 
     void deleteUser(long id);
 

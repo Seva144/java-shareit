@@ -2,7 +2,6 @@ package ru.practicum.shareit.item;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
 
 import javax.validation.Valid;
@@ -20,15 +19,13 @@ public class ItemController {
     }
 
     @PostMapping
-    public ItemDto createItem(@Valid @RequestBody ItemDto item, @RequestHeader(value = "X-Sharer-User-Id") Long owner)
-            throws NotFoundException {
+    public ItemDto createItem(@Valid @RequestBody ItemDto item, @RequestHeader(value = "X-Sharer-User-Id") Long owner) {
         return itemService.createItem(owner, item);
     }
 
     @PatchMapping("/{idItem}")
     public ItemDto patchItem(@PathVariable("idItem") Long idItem, @RequestBody ItemDto itemDto,
-                             @RequestHeader(value = "X-Sharer-User-Id") Long owner)
-            throws NotFoundException {
+                             @RequestHeader(value = "X-Sharer-User-Id") Long owner) {
         return itemService.patchItem(idItem, itemDto, owner);
     }
 

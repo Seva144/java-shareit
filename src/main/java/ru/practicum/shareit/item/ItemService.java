@@ -47,15 +47,15 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
-    public ItemDto createItem(long owner, ItemDto itemDto) throws NotFoundException {
+    public ItemDto createItem(long owner, ItemDto itemDto) {
         validUser(owner);
         Item item = itemRepository.createItem(ItemMapper.mapToModel(owner, itemDto));
         return getItem(item.getId());
     }
 
-    public ItemDto patchItem(long idItem, ItemDto itemDto, long idUser) throws NotFoundException {
+    public ItemDto patchItem(long idItem, ItemDto itemDto, long idUser) {
         validUser(idUser);
-        if (itemRepository.getItem(idItem).getOwner() != idUser) throw new NotFoundException();
+        validOwner(idItem, idUser);
 
         if (itemDto.getName() != null) itemRepository.getItem(idItem).setName(itemDto.getName());
         if (itemDto.getAvailable() != null) itemRepository.getItem(idItem).setAvailable(itemDto.getAvailable());
@@ -69,7 +69,12 @@ public class ItemService {
         return ItemMapper.mapToDto(itemRepository.getItem(idItem));
     }
 
-    public void validUser(long id) throws NotFoundException {
-        if (userRepository.getUser(id) == null) throw new NotFoundException();
+    public void validUser(long id) {
+        if (userRepository.getUser(id) == null) throw new NotFoundException("Пользователь не найден");
+    }
+
+    public void validOwner(long idItem, long idUser) {
+        if (itemRepository.getItem(idItem).getOwner() != idUser)
+            throw new NotFoundException("Отказано в доступе");
     }
 }

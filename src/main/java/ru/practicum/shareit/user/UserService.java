@@ -27,14 +27,14 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserDto createUser(UserDto userDto) throws ValidationException, NotFoundException {
+    public UserDto createUser(UserDto userDto) {
         validEmail(userDto.getEmail(), getAllUsers());
         User user = userRepository.createUser(UserMapper.mapToModel(userDto));
         return getUser(user.getId());
     }
 
-    public UserDto patchUser(Long id, UserDto userDto) throws ValidationException, NotFoundException {
-
+    public UserDto patchUser(Long id, UserDto userDto) {
+        validUser(id);
         List<UserDto> usersWithoutUserId = getAllUsers()
                 .stream()
                 .filter(user -> user.getId() != id)
@@ -48,17 +48,22 @@ public class UserService {
         return getUser(id);
     }
 
-    public UserDto getUser(long id) throws NotFoundException {
+    public UserDto getUser(long id) {
+        validUser(id);
         return UserMapper.mapToDto(userRepository.getUser(id));
     }
 
     public void deleteUser(long id) {
+        validUser(id);
         userRepository.deleteUser(id);
     }
 
-    public void validEmail(String email, List<UserDto> users) throws ValidationException {
-        if (users.stream().anyMatch(user -> Objects.equals(user.getEmail(), email))) {
-            throw new ValidationException();
-        }
+    public void validEmail(String email, List<UserDto> users) {
+        if (users.stream().anyMatch(user -> Objects.equals(user.getEmail(), email)))
+            throw new ValidationException("Пользователя с такой почтой не существует");
+    }
+
+    public void validUser(long id) {
+        if (userRepository.getUser(id) == null) throw new NotFoundException("Пользователь не найден");
     }
 }
