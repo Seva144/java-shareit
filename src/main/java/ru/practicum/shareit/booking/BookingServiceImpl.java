@@ -174,7 +174,7 @@ public class BookingServiceImpl implements BookingService {
             throw new NotFoundException("Пользователь не найден");
         if (itemRepository.validItem(bookingDto.getItemId()) == null)
             throw new NotFoundException("Нет такой вещи в приложении");
-        if (bookingDto.getStart().isAfter(bookingDto.getEnd()) |
+        if (bookingDto.getStart().isAfter(bookingDto.getEnd()) ||
                 bookingDto.getStart().isEqual(bookingDto.getEnd()))
             throw new NotRightsException("Некорректные данные");
         ItemDto itemDto = ItemMapper
