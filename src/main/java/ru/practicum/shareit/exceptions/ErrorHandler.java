@@ -1,4 +1,5 @@
 package ru.practicum.shareit.exceptions;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -21,6 +22,12 @@ public class ErrorHandler {
         return new ErrorResponse(
                 "User not found", e.getMessage()
         );
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleErrorResponse(final NotRightsException e) {
+        return new ErrorResponse(e.getMessage());
     }
 
 }

@@ -6,25 +6,29 @@ import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDateTime;
 
-@Entity
 @Data
+@Entity
+@Table(name = "comments")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "item")
-public class Item {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    long id;
-    @Column(name = "name")
-    String name;
-    @Column(name = "description")
-    String description;
-    @Column(name = "is_available")
-    boolean available;
-    @Column(name = "owner")
-    long owner;
+    Long id;
 
+    @Column(name = "text")
+    String text;
+
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    Item item;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user;
+
+    @Column(name = "create_time")
+    LocalDateTime createTime;
 }
