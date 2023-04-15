@@ -8,9 +8,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @SpringBootApplication
-@EnableJpaRepositories
-@EnableTransactionManagement
-@EntityScan
 public class ShareItApp {
 
     public static void main(String[] args) {
