@@ -1,5 +1,6 @@
 package ru.practicum.shareit.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@JsonPropertyOrder
 public class UserDto {
     long id;
     String name;
