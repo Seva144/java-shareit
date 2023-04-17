@@ -28,11 +28,11 @@ public class Booking {
     @Column(name = "status")
     Status status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "booker", referencedColumnName = "id")
     User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item", referencedColumnName = "id")
     Item item;
 

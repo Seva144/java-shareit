@@ -1,7 +1,6 @@
 package ru.practicum.shareit.booking;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import ru.practicum.shareit.booking.model.Booking;
 
 import java.time.LocalDateTime;
@@ -38,10 +37,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findAllByItem_OwnerAndStartIsAfterOrderByStartDesc(Long idUser, LocalDateTime now);
 
     Booking findFirstByItemIdAndUserIdAndStatusAndEndIsBefore(Long itemId, Long userId, Status status, LocalDateTime now);
-
-    @Query(value = "select i.id from booking as i where id=?1",
-            nativeQuery = true)
-    Long validBooking(Long id);
 
 
 }

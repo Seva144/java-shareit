@@ -3,15 +3,18 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.Status;
+import ru.practicum.shareit.booking.mapper.BookingMapperStruct;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.NotRightsException;
 import ru.practicum.shareit.item.dto.CommentDtoRequest;
 import ru.practicum.shareit.item.dto.CommentDtoResponse;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.mapper.CommentMapper;
+import ru.practicum.shareit.item.mapper.CommentMapperStruct;
+import ru.practicum.shareit.item.mapper.ItemMapperStruct;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserRepository;
@@ -44,7 +47,7 @@ public class ItemServiceImpl implements ItemService {
                             item.getName().toLowerCase().contains(text.toLowerCase()) |
                                     item.getDescription().toLowerCase().contains(text.toLowerCase()))
                     .filter(item -> String.valueOf(item.isAvailable()).equals("true"))
-                    .forEach(item -> itemsDto.add(ItemMapper.mapToDto(item)));
+                    .forEach(item -> itemsDto.add(ItemMapperStruct.INSTANCE.mapToDto(item)));
             return itemsDto;
         }
     }
@@ -53,14 +56,15 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto createItem(Long owner, ItemDto itemDto) {
         validUser(owner);
-        Item item = itemRepository.save(ItemMapper.mapToModel(owner, itemDto));
+        Item item = itemRepository.save(ItemMapperStruct.INSTANCE.mapToModel(owner, itemDto));
         return getItem(item.getId(), owner);
     }
 
     @Override
     public ItemDto getItem(Long itemId, Long userId) {
-        if (itemRepository.validItem(itemId) == null) throw new NotFoundException("Такой позиции не существует");
-        ItemDto itemDto = ItemMapper.mapToDto(itemRepository.getReferenceById(itemId));
+        itemRepository.findById(itemId)
+                .orElseThrow(() -> new NotFoundException("Такой позиции не существует"));
+        ItemDto itemDto = ItemMapperStruct.INSTANCE.mapToDto(itemRepository.getReferenceById(itemId));
         List<CommentDtoResponse> comments = getCommentsByItemId(itemId);
         if (comments != null) itemDto.setComments(comments);
         if (userId == itemRepository.getReferenceById(itemId).getOwner()) {
@@ -70,9 +74,9 @@ public class ItemServiceImpl implements ItemService {
                     .findTopByItemIdAndStartAfterAndEndAfterOrderByStartAsc(itemId, LocalDateTime.now(), LocalDateTime.now());
 
             if (lastBooking != null)
-                itemDto.setLastBooking(BookingMapper.mapToShort(lastBooking));
+                itemDto.setLastBooking(BookingMapperStruct.INSTANCE.mapToShort(lastBooking));
             if (nextBooking != null && nextBooking.getStatus() != Status.REJECTED)
-                itemDto.setNextBooking(BookingMapper.mapToShort(nextBooking));
+                itemDto.setNextBooking(BookingMapperStruct.INSTANCE.mapToShort(nextBooking));
 
         }
         return itemDto;
@@ -83,16 +87,16 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findAllByOwnerOrderByIdAsc(id)
                 .stream()
                 .map(item -> {
-                    ItemDto itemDto = ItemMapper.mapToDto(item);
+                    ItemDto itemDto = ItemMapperStruct.INSTANCE.mapToDto(item);
                     Booking lastBooking = bookingRepository
                             .getFirstByItemIdAndStartBeforeOrderByStartDesc(item.getId(), LocalDateTime.now());
                     Booking nextBooking = bookingRepository
                             .findTopByItemIdAndStartAfterAndEndAfterOrderByStartAsc(item.getId(), LocalDateTime.now(), LocalDateTime.now());
                     List<CommentDtoResponse> comments = getCommentsByItemId(item.getId());
                     if (lastBooking != null)
-                        itemDto.setLastBooking(BookingMapper.mapToShort(lastBooking));
+                        itemDto.setLastBooking(BookingMapperStruct.INSTANCE.mapToShort(lastBooking));
                     if (nextBooking != null && nextBooking.getStatus() != Status.REJECTED)
-                        itemDto.setNextBooking(BookingMapper.mapToShort(nextBooking));
+                        itemDto.setNextBooking(BookingMapperStruct.INSTANCE.mapToShort(nextBooking));
                     if (comments != null) itemDto.setComments(comments);
                     return itemDto;
                 })
@@ -114,7 +118,6 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.save(item);
 
         return getItem(idItem, idUser);
-
     }
 
     @Override
@@ -124,20 +127,20 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.getReferenceById(itemId);
         User user = userRepository.getReferenceById(userId);
         Comment comment = commentRepository.save(CommentMapper.toCommentModel(commentDto, item, user));
-        return CommentMapper.toCommentDto(comment);
+        return CommentMapperStruct.INSTANCE.toCommentDto(comment);
     }
 
     @Override
     public List<CommentDtoResponse> getCommentsByItemId(Long itemId) {
         return commentRepository.findAllByItemIdOrderByCreateTimeDesc(itemId)
                 .stream()
-                .map(CommentMapper::toCommentDto)
+                .map(CommentMapperStruct.INSTANCE::toCommentDto)
                 .collect(Collectors.toList());
     }
 
     public void validUser(Long userId) {
-        if (userRepository.validUser(userId) == null)
-            throw new NotFoundException("Пользователь не найден");
+        userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
     }
 
     public void validBooking(Long itemId, Long userId) {
