@@ -8,6 +8,7 @@ import ru.practicum.shareit.user.mapper.UserMapperStruct;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void validUser(Long id) {
-        repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+        Optional.ofNullable(repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден")));
     }
 }
