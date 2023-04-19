@@ -1,7 +1,7 @@
-drop table if exists comments;
-drop table if exists booking;
-drop table if exists item;
-drop table if exists users;
+-- drop table if exists comments;
+-- drop table if exists booking;
+-- drop table if exists item;
+-- drop table if exists users;
 
 create table if not exists users
 (
