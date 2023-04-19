@@ -4,11 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.mapper.UserMapperStruct;
+import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -21,7 +20,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getAllUsers() {
         return repository.findAll()
                 .stream()
-                .map(UserMapperStruct.INSTANCE::mapToDto)
+                .map(UserMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
@@ -41,12 +40,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUser(Long id) {
         validUser(id);
-        return UserMapperStruct.INSTANCE.mapToDto(repository.getReferenceById(id));
+        return UserMapper.mapToDto(repository.getReferenceById(id));
     }
 
     @Override
     public UserDto createUser(UserDto userDto) {
-        User user = repository.save(UserMapperStruct.INSTANCE.mapToModel(userDto));
+        User user = repository.save(UserMapper.mapToModel(userDto));
         return getUser(user.getId());
     }
 
@@ -57,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void validUser(Long id) {
-        Optional.ofNullable(repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Пользователь не найден")));
+        repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
     }
 }
