@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.dto;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +13,6 @@ import java.util.List;
 @Builder
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@JsonPropertyOrder
 public class ItemDto {
     Long id;
     @NotBlank

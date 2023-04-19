@@ -3,6 +3,7 @@ package ru.practicum.shareit.user;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.mapper.UserMapperStruct;
 import ru.practicum.shareit.user.model.User;
 
@@ -20,13 +21,13 @@ public class UserDaoService {
     public List<UserDto> getAllUsers() {
         return userDao.getAllUsers()
                 .stream()
-                .map(UserMapperStruct.INSTANCE::mapToDto)
+                .map(UserMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     public UserDto createUser(UserDto userDto) {
         validEmail(userDto.getEmail(), getAllUsers());
-        User user = userDao.createUser(UserMapperStruct.INSTANCE.mapToModel(userDto));
+        User user = userDao.createUser(UserMapper.mapToModel(userDto));
         return getUser(user.getId());
     }
 
@@ -47,7 +48,7 @@ public class UserDaoService {
 
     public UserDto getUser(long id) {
         validUser(id);
-        return UserMapperStruct.INSTANCE.mapToDto(userDao.getUser(id));
+        return UserMapper.mapToDto(userDao.getUser(id));
     }
 
     public void deleteUser(long id) {

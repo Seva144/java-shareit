@@ -2,6 +2,7 @@ package ru.practicum.shareit.item;
 
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.mapper.ItemMapperStruct;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserDao;
@@ -32,7 +33,7 @@ public class ItemDaoService {
                             item.getName().toLowerCase().contains(text.toLowerCase()) |
                                     item.getDescription().toLowerCase().contains(text.toLowerCase()))
                     .filter(item -> String.valueOf(item.isAvailable()).equals("true"))
-                    .forEach(item -> itemsDto.add(ItemMapperStruct.INSTANCE.mapToDto(item)));
+                    .forEach(item -> itemsDto.add(ItemMapper.mapToDto(item)));
             return itemsDto;
         }
     }
@@ -41,13 +42,13 @@ public class ItemDaoService {
         return itemDao.getAllItems()
                 .stream()
                 .filter(item -> item.getOwner() == id)
-                .map(ItemMapperStruct.INSTANCE::mapToDto)
+                .map(ItemMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     public ItemDto createItem(long owner, ItemDto itemDto) {
         validUser(owner);
-        Item item = itemDao.createItem(ItemMapperStruct.INSTANCE.mapToModel(owner, itemDto));
+        Item item = itemDao.createItem(ItemMapper.mapToModel(owner, itemDto));
         return getItem(item.getId());
     }
 
@@ -64,7 +65,7 @@ public class ItemDaoService {
     }
 
     public ItemDto getItem(long idItem) {
-        return ItemMapperStruct.INSTANCE.mapToDto(itemDao.getItem(idItem));
+        return ItemMapper.mapToDto(itemDao.getItem(idItem));
     }
 
     public void validUser(long id) {
