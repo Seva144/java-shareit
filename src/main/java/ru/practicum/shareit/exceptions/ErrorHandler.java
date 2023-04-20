@@ -1,6 +1,5 @@
 package ru.practicum.shareit.exceptions;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,7 +14,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handle(final ValidationException e) {
         return new ErrorResponse(
-                "Validation error", e.getMessage()
+                "Validation error", e.getMessage(), e.getCause()
         );
     }
 
@@ -23,8 +22,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleFound(final NotFoundException e) {
         return new ErrorResponse(
-                "User not found", e.getMessage()
-        );
+                "User not found", e.getMessage(), e.getCause());
     }
 
     @ExceptionHandler
@@ -32,5 +30,6 @@ public class ErrorHandler {
     public ErrorResponse handleErrorResponse(final NotRightsException e) {
         return new ErrorResponse(e.getMessage());
     }
+
 
 }
