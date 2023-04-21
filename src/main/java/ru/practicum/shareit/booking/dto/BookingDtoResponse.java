@@ -1,8 +1,6 @@
 package ru.practicum.shareit.booking.dto;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -15,8 +13,6 @@ import java.time.LocalDateTime;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-@JsonPropertyOrder
-@AllArgsConstructor
 public class BookingDtoResponse {
     Long id;
     LocalDateTime start;

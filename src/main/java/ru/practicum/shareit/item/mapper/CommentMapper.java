@@ -20,11 +20,11 @@ public class CommentMapper {
     }
 
     public static CommentDtoResponse toCommentDto(Comment comment) {
-        return new CommentDtoResponse(
-                comment.getId(),
-                comment.getText(),
-                comment.getUser().getName(),
-                comment.getCreateTime()
-        );
+        return CommentDtoResponse.builder()
+                .id(comment.getId())
+                .text(comment.getText())
+                .authorName(comment.getUser().getName())
+                .created(comment.getCreateTime())
+                .build();
     }
 }
