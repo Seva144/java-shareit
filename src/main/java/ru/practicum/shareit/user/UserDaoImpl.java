@@ -1,14 +1,12 @@
 package ru.practicum.shareit.user;
 
-import org.springframework.stereotype.Component;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Component
-public class InMemoryUserRepository implements UserRepository {
+public class UserDaoImpl implements UserDao {
 
     private final HashMap<Long, User> users = new HashMap<>();
     private static long id;

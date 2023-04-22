@@ -1,14 +1,13 @@
 package ru.practicum.shareit.item;
 
-import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Component
-public class InMemoryItemRepository implements ItemRepository {
+
+public class ItemDaoImpl implements ItemDao {
 
     private final HashMap<Long, Item> items = new HashMap<>();
     private static long id;
