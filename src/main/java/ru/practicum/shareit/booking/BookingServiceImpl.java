@@ -177,8 +177,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     public void validUser(Long idUser) {
-        userRepository.findById(idUser)
-                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+        userRepository.findById(idUser).orElseThrow(() -> new NotFoundException("Пользователь не найден"));
     }
 
     public void validUserWithBooking(Booking booking, Long idUser) {
