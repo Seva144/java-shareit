@@ -188,12 +188,10 @@ class ItemServiceImplTest {
 
         bookingDtoRequest.setItemId(itemDto.getId());
         BookingDtoResponse bookingDtoResponse = bookingService.createBooking(bookingDtoRequest, userDto2.getId());
-        bookingService.patchBooking
-                (bookingDtoResponse.getId(), true, userDto1.getId());
+        bookingService.patchBooking(bookingDtoResponse.getId(), true, userDto1.getId());
         commentDtoRequest.setText("comment1");
 
-        CommentDtoResponse commentResponse = itemService.createComment
-                (commentDtoRequest, itemDto.getId(), userDto2.getId());
+        CommentDtoResponse commentResponse = itemService.createComment(commentDtoRequest, itemDto.getId(), userDto2.getId());
 
         Query query = em.createNativeQuery("select * from comments where comments.id=?", Comment.class);
         query.setParameter(1, commentResponse.getId());
@@ -215,8 +213,7 @@ class ItemServiceImplTest {
 
         bookingDtoRequest.setItemId(itemDto.getId());
         BookingDtoResponse bookingDtoResponse = bookingService.createBooking(bookingDtoRequest, userDto2.getId());
-        bookingService.patchBooking
-                (bookingDtoResponse.getId(), true, userDto1.getId());
+        bookingService.patchBooking(bookingDtoResponse.getId(), true, userDto1.getId());
         commentDtoRequest.setText("comment1");
 
         itemService.createComment(commentDtoRequest, itemDto.getId(), userDto2.getId());

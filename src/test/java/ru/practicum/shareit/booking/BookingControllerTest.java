@@ -40,15 +40,13 @@ class BookingControllerTest {
     private MockMvc mvc;
 
 
-    private final ItemDto itemDto = new ItemDto
-            (0L, "item1", "description1", true, 0L
-                    , null, null, null);
+    private final ItemDto itemDto = new ItemDto(0L, "item1", "description1", true, 0L
+            , null, null, null);
     private final UserShort userShort = new UserShort(0L);
     private final ItemDtoShort itemDtoShort = new ItemDtoShort(0L, "itemDtoShort");
 
-    private final BookingDtoResponse bookingDtoResponse = new BookingDtoResponse
-            (0L, LocalDateTime.now().plusHours(2), LocalDateTime.now().plusHours(3)
-                    , Status.valueOf("WAITING"), userShort, itemDtoShort);
+    private final BookingDtoResponse bookingDtoResponse = new BookingDtoResponse(0L, LocalDateTime.now().plusHours(2), LocalDateTime.now().plusHours(3)
+            , Status.valueOf("WAITING"), userShort, itemDtoShort);
 
     @SneakyThrows
     @Test

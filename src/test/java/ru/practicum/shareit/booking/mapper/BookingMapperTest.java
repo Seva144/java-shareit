@@ -25,12 +25,9 @@ class BookingMapperTest {
             (0L, "item1", "description1", true, 0L, 0L);
     UserShort userShort = new UserShort();
     ItemDtoShort itemDtoShort = new ItemDtoShort();
-    BookingDtoRequest bookingDtoRequest = new BookingDtoRequest
-            (LocalDateTime.now(), LocalDateTime.now(), 0L, 0L);
-    BookingDtoResponse bookingDtoResponse = new BookingDtoResponse
-            (0L, LocalDateTime.now(), LocalDateTime.now(), Status.WAITING, userShort, itemDtoShort);
-    Booking booking = new Booking
-            (0L, LocalDateTime.now(), LocalDateTime.now(), Status.WAITING, user, item);
+    BookingDtoRequest bookingDtoRequest = new BookingDtoRequest(LocalDateTime.now(), LocalDateTime.now(), 0L, 0L);
+    BookingDtoResponse bookingDtoResponse = new BookingDtoResponse(0L, LocalDateTime.now(), LocalDateTime.now(), Status.WAITING, userShort, itemDtoShort);
+    Booking booking = new Booking(0L, LocalDateTime.now(), LocalDateTime.now(), Status.WAITING, user, item);
 
     @BeforeEach
     void setUp() {

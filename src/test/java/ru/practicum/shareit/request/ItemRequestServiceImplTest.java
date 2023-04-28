@@ -61,8 +61,7 @@ class ItemRequestServiceImplTest {
     void createItemRequest() {
         itemRequestDto = itemRequestService.createItemRequest(userDto2.getId(), itemRequestDto);
 
-        Query query = em.createNativeQuery
-                ("select * from requests where requests.id=?", ItemRequest.class);
+        Query query = em.createNativeQuery("select * from requests where requests.id=?", ItemRequest.class);
         query.setParameter(1, itemRequestDto.getId());
         ItemRequest itemRequest = (ItemRequest) query.getSingleResult();
 
@@ -76,8 +75,7 @@ class ItemRequestServiceImplTest {
         itemRequestDto = itemRequestService.createItemRequest(userDto2.getId(), itemRequestDto);
         itemRequestDto = itemRequestService.getItemRequestById(userDto2.getId(), itemRequestDto.getId());
 
-        Query query = em.createNativeQuery
-                ("select * from requests where requests.id=?1", ItemRequest.class);
+        Query query = em.createNativeQuery("select * from requests where requests.id=?1", ItemRequest.class);
         query.setParameter(1, itemRequestDto.getId());
         ItemRequest itemRequest = (ItemRequest) query.getSingleResult();
 
@@ -92,8 +90,7 @@ class ItemRequestServiceImplTest {
         List<ItemRequestDto> itemRequestsDto = itemRequestService
                 .getAllItemRequestsExceptByUser(userDto1.getId(), 1, 10);
 
-        Query query = em.createNativeQuery
-                ("select * from requests where not requests.requestor_id=?1", ItemRequest.class);
+        Query query = em.createNativeQuery("select * from requests where not requests.requestor_id=?1", ItemRequest.class);
         query.setParameter(1, userDto1.getId());
         List<ItemRequest> itemRequest = query.getResultList();
 
@@ -110,8 +107,7 @@ class ItemRequestServiceImplTest {
         List<ItemRequestDto> itemRequestsDto = itemRequestService
                 .getAllItemRequestsForUser(userDto2.getId());
 
-        Query query = em.createNativeQuery
-                ("select * from requests where requests.requestor_id=?1", ItemRequest.class);
+        Query query = em.createNativeQuery("select * from requests where requests.requestor_id=?1", ItemRequest.class);
         query.setParameter(1, userDto2.getId());
         List<ItemRequest> itemRequest = query.getResultList();
 

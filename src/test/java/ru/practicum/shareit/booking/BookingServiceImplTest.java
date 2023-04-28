@@ -64,8 +64,7 @@ class BookingServiceImplTest {
 
     @Test
     void createBooking() {
-        BookingDtoResponse bookingDtoResponse = bookingService.createBooking
-                (bookingDtoRequest, bookingDtoRequest.getUserId());
+        BookingDtoResponse bookingDtoResponse = bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
 
         Query query = em.createNativeQuery("select * from booking where booking.id=?", Booking.class);
         query.setParameter(1, bookingDtoResponse.getId());
@@ -94,8 +93,7 @@ class BookingServiceImplTest {
     @Test
     void patchBooking_addApprovedStatus() {
         BookingDtoResponse bookingCreate = bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
-        BookingDtoResponse bookingDtoResponse = bookingService.patchBooking
-                (bookingCreate.getId(), true, userDto1.getId());
+        BookingDtoResponse bookingDtoResponse = bookingService.patchBooking(bookingCreate.getId(), true, userDto1.getId());
 
         Query query = em.createNativeQuery("select * from booking where booking.id=?1", Booking.class);
         query.setParameter(1, bookingDtoResponse.getId());
@@ -108,8 +106,7 @@ class BookingServiceImplTest {
     @Test
     void patchBooking_addRejectedStatus() {
         BookingDtoResponse bookingCreate = bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
-        BookingDtoResponse bookingDtoResponse = bookingService.patchBooking
-                (bookingCreate.getId(), false, userDto1.getId());
+        BookingDtoResponse bookingDtoResponse = bookingService.patchBooking(bookingCreate.getId(), false, userDto1.getId());
 
         Query query = em.createNativeQuery("select * from booking where booking.id=?1", Booking.class);
         query.setParameter(1, bookingDtoResponse.getId());
@@ -122,8 +119,7 @@ class BookingServiceImplTest {
     @Test
     void getAllUserBooking_stateAll() {
         bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
-        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllUserBooking
-                (userDto2.getId(), "ALL", 0, 10);
+        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllUserBooking(userDto2.getId(), "ALL", 0, 10);
 
         Query query = em.createNativeQuery("select * from booking", Booking.class);
         List<Booking> booking = query.getResultList();
@@ -140,8 +136,7 @@ class BookingServiceImplTest {
         bookingDtoRequest.setStart(LocalDateTime.now().plusHours(2));
         bookingDtoRequest.setEnd(LocalDateTime.now().plusHours(4));
         bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
-        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllUserBooking
-                (userDto2.getId(), "FUTURE", 0, 10);
+        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllUserBooking(userDto2.getId(), "FUTURE", 0, 10);
 
         Query query = em.createNativeQuery("select * from booking where booking.start_time > ?1", Booking.class);
         query.setParameter(1, LocalDateTime.now());
@@ -156,8 +151,7 @@ class BookingServiceImplTest {
     @Test
     void getAllUserBooking_stateWaiting() {
         bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
-        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllUserBooking
-                (userDto2.getId(), "WAITING", 0, 10);
+        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllUserBooking(userDto2.getId(), "WAITING", 0, 10);
 
         Query query = em.createNativeQuery("select * from booking where booking.status = ?1", Booking.class);
         query.setParameter(1, "WAITING");
@@ -175,8 +169,7 @@ class BookingServiceImplTest {
         bookingDtoRequest.setStart(LocalDateTime.now().minusHours(2));
         bookingDtoRequest.setEnd(LocalDateTime.now().plusHours(4));
         bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
-        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllUserBooking
-                (userDto2.getId(), "CURRENT", 0, 10);
+        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllUserBooking(userDto2.getId(), "CURRENT", 0, 10);
 
         Query query = em.createNativeQuery("select * from booking where booking.start_time < ?1 " +
                 "and booking.end_time>?2", Booking.class);
@@ -195,8 +188,7 @@ class BookingServiceImplTest {
         bookingDtoRequest.setStart(LocalDateTime.now().minusHours(3));
         bookingDtoRequest.setEnd(LocalDateTime.now().minusHours(2));
         bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
-        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllUserBooking
-                (userDto2.getId(), "PAST", 0, 10);
+        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllUserBooking(userDto2.getId(), "PAST", 0, 10);
 
         Query query = em.createNativeQuery("select * from booking where booking.end_time < ?1 ", Booking.class);
         query.setParameter(1, LocalDateTime.now());
@@ -212,8 +204,7 @@ class BookingServiceImplTest {
     void getAllUserBooking_stateRejected() {
         BookingDtoResponse bookingCreate = bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
         bookingService.patchBooking(bookingCreate.getId(), false, userDto1.getId());
-        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllUserBooking
-                (userDto2.getId(), "REJECTED", 0, 10);
+        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllUserBooking(userDto2.getId(), "REJECTED", 0, 10);
 
         Query query = em.createNativeQuery("select * from booking where booking.status =?1 ", Booking.class);
         query.setParameter(1, "REJECTED");
@@ -228,8 +219,7 @@ class BookingServiceImplTest {
     @Test
     void getAllOwnerBooking_stateAll() {
         bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
-        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllOwnerBooking
-                (userDto1.getId(), "ALL", 0, 10);
+        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllOwnerBooking(userDto1.getId(), "ALL", 0, 10);
 
         Query query = em.createNativeQuery("select * from booking", Booking.class);
         List<Booking> booking = query.getResultList();
@@ -245,8 +235,7 @@ class BookingServiceImplTest {
         bookingDtoRequest.setStart(LocalDateTime.now().plusHours(2));
         bookingDtoRequest.setEnd(LocalDateTime.now().plusHours(4));
         bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
-        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllOwnerBooking
-                (userDto1.getId(), "FUTURE", 0, 10);
+        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllOwnerBooking(userDto1.getId(), "FUTURE", 0, 10);
 
         Query query = em.createNativeQuery("select * from booking where booking.start_time > ?1", Booking.class);
         query.setParameter(1, LocalDateTime.now());
@@ -261,8 +250,7 @@ class BookingServiceImplTest {
     @Test
     void getAllOwnerBooking_stateWaiting() {
         bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
-        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllOwnerBooking
-                (userDto1.getId(), "WAITING", 0, 10);
+        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllOwnerBooking(userDto1.getId(), "WAITING", 0, 10);
 
         Query query = em.createNativeQuery("select * from booking where booking.status = ?1", Booking.class);
         query.setParameter(1, "WAITING");
@@ -280,8 +268,7 @@ class BookingServiceImplTest {
         bookingDtoRequest.setStart(LocalDateTime.now().minusHours(2));
         bookingDtoRequest.setEnd(LocalDateTime.now().plusHours(4));
         bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
-        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllOwnerBooking
-                (userDto1.getId(), "CURRENT", 0, 10);
+        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllOwnerBooking(userDto1.getId(), "CURRENT", 0, 10);
 
         Query query = em.createNativeQuery("select * from booking where booking.start_time < ?1 " +
                 "and booking.end_time>?2", Booking.class);
@@ -300,8 +287,7 @@ class BookingServiceImplTest {
         bookingDtoRequest.setStart(LocalDateTime.now().minusHours(3));
         bookingDtoRequest.setEnd(LocalDateTime.now().minusHours(2));
         bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
-        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllOwnerBooking
-                (userDto1.getId(), "PAST", 0, 10);
+        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllOwnerBooking(userDto1.getId(), "PAST", 0, 10);
 
         Query query = em.createNativeQuery("select * from booking where booking.end_time < ?1 ", Booking.class);
         query.setParameter(1, LocalDateTime.now());
@@ -317,8 +303,7 @@ class BookingServiceImplTest {
     void getAllOwnerBooking_stateRejected() {
         BookingDtoResponse bookingCreate = bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
         bookingService.patchBooking(bookingCreate.getId(), false, userDto1.getId());
-        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllOwnerBooking
-                (userDto1.getId(), "REJECTED", 0, 10);
+        List<BookingDtoResponse> bookingDtoResponse = bookingService.getAllOwnerBooking(userDto1.getId(), "REJECTED", 0, 10);
 
         Query query = em.createNativeQuery("select * from booking where booking.status =?1 ", Booking.class);
         query.setParameter(1, "REJECTED");
