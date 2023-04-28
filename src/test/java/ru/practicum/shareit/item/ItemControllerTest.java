@@ -42,17 +42,16 @@ class ItemControllerTest {
 
     private final UserDto userDto = new UserDto(0L, "user1", "user1@mail.ru");
 
-    private final CommentDtoResponse commentDtoResponse = new CommentDtoResponse
-            (0L, "text1", "name1", LocalDateTime.now());
+    private final CommentDtoResponse commentDtoResponse = new CommentDtoResponse(0L, "text1",
+            "name1", LocalDateTime.now());
 
     private final BookingDtoShort bookingDtoShort1 = new BookingDtoShort(0L, 0L);
     private final BookingDtoShort bookingDtoShort2 = new BookingDtoShort(1L, 1L);
     private final List<CommentDtoResponse> comments = new ArrayList<>();
 
 
-    private final ItemDto itemDto = new ItemDto
-            (0L, "item1", "description1", true, 0L
-                    , bookingDtoShort1, bookingDtoShort2, null);
+    private final ItemDto itemDto = new ItemDto(0L, "item1", "description1",
+            true, 0L, bookingDtoShort1, bookingDtoShort2, null);
 
     @SneakyThrows
     @Test

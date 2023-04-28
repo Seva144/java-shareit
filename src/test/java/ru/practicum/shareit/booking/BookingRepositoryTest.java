@@ -92,8 +92,7 @@ class BookingRepositoryTest {
     void findTopByItemIdAndStartAfterAndEndAfterOrderByStartAsc() {
         final Optional<Booking> bookings =
                 Optional.ofNullable(bookingRepository
-                        .findTopByItemIdAndStartAfterAndEndAfterOrderByStartAsc
-                                (1L, LocalDateTime.now(), LocalDateTime.now()));
+                        .findTopByItemIdAndStartAfterAndEndAfterOrderByStartAsc(1L, LocalDateTime.now(), LocalDateTime.now()));
         assertNotNull(bookings);
     }
 
@@ -117,8 +116,7 @@ class BookingRepositoryTest {
     void findAllByUserIdAndStartIsAfterOrderByStartDesc() {
         final Optional<List<Booking>> items =
                 Optional.ofNullable(bookingRepository
-                        .findAllByUserIdAndStartIsAfterOrderByStartDesc
-                                (2L, LocalDateTime.now(), pageable));
+                        .findAllByUserIdAndStartIsAfterOrderByStartDesc(2L, LocalDateTime.now(), pageable));
         assertNotNull(items);
     }
 
@@ -126,8 +124,7 @@ class BookingRepositoryTest {
     void findAllByUserIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc() {
         final Optional<List<Booking>> items =
                 Optional.ofNullable(bookingRepository
-                        .findAllByUserIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc
-                                (2L, LocalDateTime.now(), LocalDateTime.now(), pageable));
+                        .findAllByUserIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(2L, LocalDateTime.now(), LocalDateTime.now(), pageable));
         assertNotNull(items);
     }
 
@@ -135,8 +132,7 @@ class BookingRepositoryTest {
     void findAllByUserIdAndEndIsBeforeOrderByStartDesc() {
         final Optional<List<Booking>> items =
                 Optional.ofNullable(bookingRepository
-                        .findAllByUserIdAndEndIsBeforeOrderByStartDesc
-                                (2L, LocalDateTime.now(), pageable));
+                        .findAllByUserIdAndEndIsBeforeOrderByStartDesc(2L, LocalDateTime.now(), pageable));
         assertNotNull(items);
     }
 
@@ -160,8 +156,7 @@ class BookingRepositoryTest {
     void findAllByItem_OwnerAndEndIsBeforeOrderByStartDesc() {
         final Optional<List<Booking>> items =
                 Optional.ofNullable(bookingRepository
-                        .findAllByItem_OwnerAndEndIsBeforeOrderByStartDesc
-                                (2L, LocalDateTime.now(), pageable));
+                        .findAllByItem_OwnerAndEndIsBeforeOrderByStartDesc(2L, LocalDateTime.now(), pageable));
         assertNotNull(items);
     }
 
@@ -169,8 +164,7 @@ class BookingRepositoryTest {
     void findAllByItem_OwnerAndStartIsBeforeAndEndIsAfterOrderByStartDesc() {
         final Optional<List<Booking>> items =
                 Optional.ofNullable(bookingRepository
-                        .findAllByItem_OwnerAndStartIsBeforeAndEndIsAfterOrderByStartDesc
-                                (2L, LocalDateTime.now(), LocalDateTime.now(), pageable));
+                        .findAllByItem_OwnerAndStartIsBeforeAndEndIsAfterOrderByStartDesc(2L, LocalDateTime.now(), LocalDateTime.now(), pageable));
         assertNotNull(items);
     }
 
@@ -178,8 +172,7 @@ class BookingRepositoryTest {
     void findAllByItem_OwnerAndStartIsAfterOrderByStartDesc() {
         final Optional<List<Booking>> items =
                 Optional.ofNullable(bookingRepository
-                        .findAllByItem_OwnerAndStartIsAfterOrderByStartDesc
-                                (2L, LocalDateTime.now(), pageable));
+                        .findAllByItem_OwnerAndStartIsAfterOrderByStartDesc(2L, LocalDateTime.now(), pageable));
         assertNotNull(items);
     }
 
@@ -187,8 +180,7 @@ class BookingRepositoryTest {
     void findFirstByItemIdAndUserIdAndStatusAndEndIsBefore() {
         final Optional<Booking> items =
                 Optional.ofNullable(bookingRepository
-                        .findFirstByItemIdAndUserIdAndStatusAndEndIsBefore
-                                (item.getId(), user2.getId(), Status.WAITING, LocalDateTime.now()));
+                        .findFirstByItemIdAndUserIdAndStatusAndEndIsBefore(item.getId(), user2.getId(), Status.WAITING, LocalDateTime.now()));
         assertNotNull(items);
     }
 }

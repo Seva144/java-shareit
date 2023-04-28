@@ -19,10 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BookingMapperTest {
 
-    User user = new User
-            (0L, "user1", "user1@mail.ru");
-    Item item = new Item
-            (0L, "item1", "description1", true, 0L, 0L);
+    User user = new User(0L, "user1", "user1@mail.ru");
+    Item item = new Item(0L, "item1", "description1", true, 0L, 0L);
     UserShort userShort = new UserShort();
     ItemDtoShort itemDtoShort = new ItemDtoShort();
     BookingDtoRequest bookingDtoRequest = new BookingDtoRequest(LocalDateTime.now(), LocalDateTime.now(), 0L, 0L);

@@ -41,12 +41,11 @@ class ItemRequestControllerTest {
     private MockMvc mvc;
 
     private final UserDto userDto = new UserDto(0L, "user1", "user1@mail.ru");
-    private final ItemDto itemDto = new ItemDto
-            (0L, "item1", "description1", true, 0L
-                    , null, null, null);
+    private final ItemDto itemDto = new ItemDto(0L, "item1", "description1",
+            true, 0L, null, null, null);
     private final List<ItemDto> items = new ArrayList<>();
-    private final ItemRequestDto itemRequestDto = new ItemRequestDto
-            (0L, "request", LocalDateTime.now(), null);
+    private final ItemRequestDto itemRequestDto = new ItemRequestDto(0L, "request",
+            LocalDateTime.now(), null);
 
     @BeforeEach
     void setUp() {
