@@ -6,7 +6,9 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BookingShort {
+@AllArgsConstructor
+@NoArgsConstructor
+public class BookingDtoShort {
 
     Long id;
     Long bookerId;

@@ -1,7 +1,9 @@
 package ru.practicum.shareit.booking.model;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.booking.Status;
 import ru.practicum.shareit.item.model.Item;
@@ -13,6 +15,8 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "booking")
+@AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Booking {
     @Id
