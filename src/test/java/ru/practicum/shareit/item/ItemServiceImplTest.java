@@ -245,7 +245,7 @@ class ItemServiceImplTest {
 
     @Test
     void validBooking() {
-        assertThrows(NotRightsException.class, ()->
+        assertThrows(NotRightsException.class, () ->
                 itemService.createComment(commentDtoRequest, 99L, userDto1.getId()));
     }
 
