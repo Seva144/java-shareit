@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ru.practicum.shareit.booking.dto.BookingDtoRequest;
 import ru.practicum.shareit.booking.dto.BookingDtoResponse;
 import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.exceptions.NotFoundException;
+import ru.practicum.shareit.exceptions.NotRightsException;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.UserService;
@@ -317,21 +319,14 @@ class BookingServiceImplTest {
 
     @Test
     void validUser() {
+        assertThrows(NotFoundException.class, () ->
+                bookingService.getAllUserBooking(99L, "WAITING", 1, 10));
     }
 
-    @Test
-    void validUserWithBooking() {
-    }
-
-    @Test
-    void validBookingToController() {
-    }
-
-    @Test
-    void validBookingFromDB() {
-    }
 
     @Test
     void validPage() {
+        assertThrows(NotRightsException.class, () ->
+                bookingService.getAllUserBooking(userDto1.getId(), "WAITING", -1, 10));
     }
 }

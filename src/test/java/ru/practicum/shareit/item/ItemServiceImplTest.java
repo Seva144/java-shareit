@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ru.practicum.shareit.booking.BookingService;
 import ru.practicum.shareit.booking.dto.BookingDtoRequest;
 import ru.practicum.shareit.booking.dto.BookingDtoResponse;
+import ru.practicum.shareit.exceptions.NotFoundException;
+import ru.practicum.shareit.exceptions.NotRightsException;
 import ru.practicum.shareit.item.dto.CommentDtoRequest;
 import ru.practicum.shareit.item.dto.CommentDtoResponse;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -20,6 +22,7 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
@@ -236,13 +239,19 @@ class ItemServiceImplTest {
 
     @Test
     void validUser() {
+        assertThrows(NotFoundException.class, () ->
+                itemService.createItem(99L, itemDto));
     }
 
     @Test
     void validBooking() {
+        assertThrows(NotRightsException.class, ()->
+                itemService.createComment(commentDtoRequest, 99L, userDto1.getId()));
     }
 
     @Test
     void validOwner() {
+        assertThrows(EntityNotFoundException.class, () ->
+                itemService.patchItem(99L, itemDto, userDto1.getId()));
     }
 }

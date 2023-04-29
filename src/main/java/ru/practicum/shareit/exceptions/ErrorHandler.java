@@ -12,14 +12,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ErrorHandler {
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handle(final ValidationException e) {
-        return new ErrorResponse(
-                "Validation error", e.getMessage(), e.getCause()
-        );
-    }
-
-    @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleFound(final NotFoundException e) {
         return new ErrorResponse(
