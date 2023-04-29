@@ -112,7 +112,7 @@ class UserServiceImplTest {
         userDtoUpdate.setEmail("user1_update@mail.ru");
         service.patchUser(user.getId(), userDtoUpdate);
         Query query = em.createNativeQuery("Select * from users where users.id=?", User.class);
-        query.setParameter(1, "1");
+        query.setParameter(1, user.getId());
 
         User user1 = (User) query.getSingleResult();
 
