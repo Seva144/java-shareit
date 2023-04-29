@@ -78,6 +78,12 @@ class BookingServiceImplTest {
     }
 
     @Test
+    void createBooking_throwException() {
+        assertThrows(NotFoundException.class, () -> bookingService
+                .createBooking(bookingDtoRequest, userDto1.getId()));
+    }
+
+    @Test
     void getBooking() {
         BookingDtoResponse bookingCreate = bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
         BookingDtoResponse bookingDtoResponse = bookingService.getBooking(userDto2.getId(), bookingCreate.getId());
@@ -115,7 +121,14 @@ class BookingServiceImplTest {
         Booking booking = (Booking) query.getSingleResult();
 
         assertThat(booking.getStatus(), equalTo(bookingDtoResponse.getStatus()));
+    }
 
+    @Test
+    void patchBooking_throwException() {
+        BookingDtoResponse bookingCreate = bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
+        bookingService.patchBooking(bookingCreate.getId(), false, userDto1.getId());
+        assertThrows(NotRightsException.class, () ->
+                bookingService.patchBooking(bookingCreate.getId(), false, userDto1.getId()));
     }
 
     @Test
@@ -218,6 +231,17 @@ class BookingServiceImplTest {
         assertThat(booking.get(0).getStatus(), equalTo(bookingDtoResponse.get(0).getStatus()));
     }
 
+
+    @Test
+    void getAllUserBooking_wrongState() {
+        BookingDtoResponse bookingCreate = bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
+        bookingService.patchBooking(bookingCreate.getId(), false, userDto1.getId());
+        assertThrows(NotRightsException.class, () -> bookingService
+                .getAllUserBooking(userDto2.getId(), "WRONG_STATE", 0, 10));
+
+
+    }
+
     @Test
     void getAllOwnerBooking_stateAll() {
         bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
@@ -318,11 +342,35 @@ class BookingServiceImplTest {
     }
 
     @Test
+    void getAllOwnerBooking_stateWrongState() {
+        BookingDtoResponse bookingCreate = bookingService.createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
+        bookingService.patchBooking(bookingCreate.getId(), false, userDto1.getId());
+        assertThrows(NotRightsException.class, () -> bookingService
+                .getAllOwnerBooking(userDto1.getId(), "WRONG_STATE", 0, 10));
+
+    }
+
+    @Test
     void validUser() {
         assertThrows(NotFoundException.class, () ->
                 bookingService.getAllUserBooking(99L, "WAITING", 1, 10));
     }
 
+    @Test
+    public void validUserWithBooking() {
+        BookingDtoResponse bookingCreate = bookingService
+                .createBooking(bookingDtoRequest, bookingDtoRequest.getUserId());
+        assertThrows(NotFoundException.class, () ->
+                bookingService.patchBooking(bookingCreate.getId(), false, userDto2.getId()));
+    }
+
+    @Test
+    public void validBookingFromDB() {
+        bookingDtoRequest.setStart(LocalDateTime.now().plusHours(2));
+        bookingDtoRequest.setEnd(LocalDateTime.now().plusHours(1));
+        assertThrows(NotRightsException.class, () ->
+                bookingService.createBooking(bookingDtoRequest, userDto2.getId()));
+    }
 
     @Test
     void validPage() {

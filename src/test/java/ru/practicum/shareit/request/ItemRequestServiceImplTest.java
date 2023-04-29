@@ -69,6 +69,7 @@ class ItemRequestServiceImplTest {
 
         assertThat(itemRequest.getId(), notNullValue());
         assertThat(itemRequest.getId(), equalTo(itemRequestDto.getId()));
+        assertThat(itemRequest.getRequestor().getId(), equalTo(userDto2.getId()));
         assertThat(itemRequest.getDescription(), equalTo(itemRequestDto.getDescription()));
     }
 
@@ -120,13 +121,13 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void validUser_ThrowException() {
+    void validUser() {
         assertThrows(NotFoundException.class, () ->
                 itemRequestService.createItemRequest(10L, itemRequestDto));
     }
 
     @Test
-    void validPage_ThrowException() {
+    void validPage() {
         assertThrows(NotRightsException.class, () ->
                 itemRequestService.getAllItemRequestsExceptByUser(10L, -1, 10));
     }

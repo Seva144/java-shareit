@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
@@ -183,6 +183,16 @@ class ItemServiceImplTest {
     }
 
     @Test
+    void searchItemsByText_returnEmpty() {
+        itemDto.setName("item1");
+        itemDto.setDescription("description1");
+        itemDto.setAvailable(true);
+        itemService.createItem(userDto1.getId(), itemDto);
+        List<ItemDto> items = itemService.searchItemsByText("", 1, 10);
+        assertThat(items, Matchers.is(empty()));
+    }
+
+    @Test
     void createComment() {
         itemDto.setName("item1");
         itemDto.setDescription("description1");
@@ -252,6 +262,6 @@ class ItemServiceImplTest {
     @Test
     void validOwner() {
         assertThrows(EntityNotFoundException.class, () ->
-                itemService.patchItem(99L, itemDto, userDto1.getId()));
+                itemService.patchItem(1L, itemDto, userDto2.getId()));
     }
 }
