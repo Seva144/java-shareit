@@ -75,6 +75,7 @@ class ItemControllerTest {
                 .andExpect(jsonPath("$.nextBooking", is(itemDto.getNextBooking()), BookingDtoShort.class))
                 .andExpect(jsonPath("$.comments", is(itemDto.getComments()), CommentDtoResponse.class));
 
+        verify(itemService).createItem(anyLong(), any(ItemDto.class));
     }
 
     @SneakyThrows
@@ -98,6 +99,8 @@ class ItemControllerTest {
                 .andExpect(jsonPath("$.lastBooking", is(itemDto.getLastBooking()), BookingDtoShort.class))
                 .andExpect(jsonPath("$.nextBooking", is(itemDto.getNextBooking()), BookingDtoShort.class))
                 .andExpect(jsonPath("$.comments", is(itemDto.getComments()), CommentDtoResponse.class));
+
+        verify(itemService).patchItem(anyLong(), any(ItemDto.class), anyLong());
     }
 
     @SneakyThrows
@@ -120,6 +123,7 @@ class ItemControllerTest {
                 .andExpect(jsonPath("$.nextBooking", is(itemDto.getNextBooking()), BookingDtoShort.class))
                 .andExpect(jsonPath("$.comments", is(itemDto.getComments()), CommentDtoResponse.class));
 
+        verify(itemService).getItem(anyLong(), anyLong());
     }
 
     @SneakyThrows
@@ -142,6 +146,8 @@ class ItemControllerTest {
                 .andExpect(jsonPath("$[0].lastBooking", is(itemDto.getLastBooking()), BookingDtoShort.class))
                 .andExpect(jsonPath("$[0].nextBooking", is(itemDto.getNextBooking()), BookingDtoShort.class))
                 .andExpect(jsonPath("$[0].comments", is(itemDto.getComments()), CommentDtoResponse.class));
+
+        verify(itemService).searchItemsByText(anyString(), anyInt(), anyInt());
     }
 
     @SneakyThrows
@@ -165,6 +171,7 @@ class ItemControllerTest {
                 .andExpect(jsonPath("$[0].nextBooking", is(itemDto.getNextBooking()), BookingDtoShort.class))
                 .andExpect(jsonPath("$[0].comments", is(itemDto.getComments()), CommentDtoResponse.class));
 
+        verify(itemService).getItemByUserId(anyLong(), anyInt(), anyInt());
     }
 
     @SneakyThrows
@@ -183,5 +190,7 @@ class ItemControllerTest {
                 .andExpect(jsonPath("$.id", is(commentDtoResponse.getId()), Long.class))
                 .andExpect(jsonPath("$.text", is(commentDtoResponse.getText()), String.class))
                 .andExpect(jsonPath("$.authorName", is(commentDtoResponse.getAuthorName()), String.class));
+
+        verify(itemService).createComment(any(CommentDtoRequest.class), anyLong(), anyLong());
     }
 }

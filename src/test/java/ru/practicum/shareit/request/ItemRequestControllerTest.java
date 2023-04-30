@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -71,6 +72,8 @@ class ItemRequestControllerTest {
                 .andExpect(jsonPath("$.items[0].name", is(itemDto.getName()), String.class))
                 .andExpect(jsonPath("$.items[0].description", is(itemDto.getDescription()), String.class))
                 .andExpect(jsonPath("$.items[0].available", is(itemDto.getAvailable()), Boolean.class));
+
+        verify(itemRequestService).createItemRequest(anyLong(), any(ItemRequestDto.class));
     }
 
     @SneakyThrows
@@ -90,6 +93,8 @@ class ItemRequestControllerTest {
                 .andExpect(jsonPath("$[0].items[0].name", is(itemDto.getName()), String.class))
                 .andExpect(jsonPath("$[0].items[0].description", is(itemDto.getDescription()), String.class))
                 .andExpect(jsonPath("$[0].items[0].available", is(itemDto.getAvailable()), Boolean.class));
+
+        verify(itemRequestService).getAllItemRequestsForUser(anyLong());
     }
 
     @SneakyThrows
@@ -108,6 +113,8 @@ class ItemRequestControllerTest {
                 .andExpect(jsonPath("$.items[0].name", is(itemDto.getName()), String.class))
                 .andExpect(jsonPath("$.items[0].description", is(itemDto.getDescription()), String.class))
                 .andExpect(jsonPath("$.items[0].available", is(itemDto.getAvailable()), Boolean.class));
+
+        verify(itemRequestService).getItemRequestById(anyLong(), anyLong());
 
     }
 
@@ -129,6 +136,7 @@ class ItemRequestControllerTest {
                 .andExpect(jsonPath("$[0].items[0].description", is(itemDto.getDescription()), String.class))
                 .andExpect(jsonPath("$[0].items[0].available", is(itemDto.getAvailable()), Boolean.class));
 
+        verify(itemRequestService).getAllItemRequestsExceptByUser(anyLong(), anyInt(), anyInt());
     }
 
 }

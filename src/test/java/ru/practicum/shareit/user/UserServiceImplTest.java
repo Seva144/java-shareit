@@ -47,7 +47,6 @@ class UserServiceImplTest {
         assertThat(user1.getId(), notNullValue());
         assertThat(user1.getName(), equalTo(userDto.getName()));
         assertThat(user1.getEmail(), equalTo(userDto.getEmail()));
-
     }
 
     @Test
@@ -126,6 +125,4 @@ class UserServiceImplTest {
     void validUser() {
         assertThrows(NotFoundException.class, () -> service.getUser(2L));
     }
-
-
 }

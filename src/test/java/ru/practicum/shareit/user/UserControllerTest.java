@@ -52,6 +52,8 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.id", is(userDto.getId()), Long.class))
                 .andExpect(jsonPath("$.name", is(userDto.getName()), String.class))
                 .andExpect(jsonPath("$.email", is(userDto.getEmail()), String.class));
+
+        verify(userService).createUser(any());
     }
 
     @SneakyThrows
@@ -69,6 +71,8 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.id", is(userDto.getId()), Long.class))
                 .andExpect(jsonPath("$.name", is(userDto.getName()), String.class))
                 .andExpect(jsonPath("$.email", is(userDto.getEmail()), String.class));
+
+        verify(userService).patchUser(anyLong(), any(UserDto.class));
     }
 
     @SneakyThrows
@@ -79,6 +83,8 @@ class UserControllerTest {
         mvc.perform(get("/users"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
+
+        verify(userService).getAllUsers();
     }
 
     @SneakyThrows

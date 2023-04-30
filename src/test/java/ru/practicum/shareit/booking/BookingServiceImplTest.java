@@ -238,8 +238,6 @@ class BookingServiceImplTest {
         bookingService.patchBooking(bookingCreate.getId(), false, userDto1.getId());
         assertThrows(NotRightsException.class, () -> bookingService
                 .getAllUserBooking(userDto2.getId(), "WRONG_STATE", 0, 10));
-
-
     }
 
     @Test

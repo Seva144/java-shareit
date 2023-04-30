@@ -21,6 +21,7 @@ import java.util.Collections;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -70,6 +71,7 @@ class BookingControllerTest {
                 .andExpect(jsonPath("$.item.name",
                         is(bookingDtoResponse.getItem().getName()), String.class));
 
+        verify(bookingService).createBooking(any(BookingDtoRequest.class), anyLong());
     }
 
     @SneakyThrows
@@ -94,6 +96,7 @@ class BookingControllerTest {
                 .andExpect(jsonPath("$.item.name",
                         is(bookingDtoResponse.getItem().getName()), String.class));
 
+        verify(bookingService).patchBooking(anyLong(), anyBoolean(), anyLong());
     }
 
     @SneakyThrows
@@ -115,6 +118,8 @@ class BookingControllerTest {
                         is(bookingDtoResponse.getItem().getId()), Long.class))
                 .andExpect(jsonPath("$.item.name",
                         is(bookingDtoResponse.getItem().getName()), String.class));
+
+        verify(bookingService).getBooking(anyLong(), anyLong());
     }
 
     @SneakyThrows
@@ -137,6 +142,8 @@ class BookingControllerTest {
                         is(bookingDtoResponse.getItem().getId()), Long.class))
                 .andExpect(jsonPath("$[0].item.name",
                         is(bookingDtoResponse.getItem().getName()), String.class));
+
+        verify(bookingService).getAllUserBooking(anyLong(), any(), anyInt(), anyInt());
     }
 
     @SneakyThrows
@@ -159,5 +166,7 @@ class BookingControllerTest {
                         is(bookingDtoResponse.getItem().getId()), Long.class))
                 .andExpect(jsonPath("$[0].item.name",
                         is(bookingDtoResponse.getItem().getName()), String.class));
+
+        verify(bookingService).getAllOwnerBooking(anyLong(), any(), anyInt(), anyInt());
     }
 }
