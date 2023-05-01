@@ -1,7 +1,9 @@
 package ru.practicum.shareit.user.model;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
@@ -10,6 +12,8 @@ import javax.persistence.*;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "users")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id

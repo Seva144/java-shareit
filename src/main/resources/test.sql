@@ -48,11 +48,3 @@ create table if not exists comments
     user_id     bigint references users (id),
     create_time timestamp without time zone
 );
-
-
-
-
-
-
-
-

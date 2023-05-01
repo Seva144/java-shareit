@@ -2,6 +2,8 @@ package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.Status;
@@ -35,29 +37,29 @@ public class ItemServiceImpl implements ItemService {
     private final CommentRepository commentRepository;
 
     @Override
-    public List<ItemDto> searchItemsByText(String text) {
-        if (text.isEmpty()) {
-            return new ArrayList<>();
-        } else {
-            List<ItemDto> itemsDto = new ArrayList<>();
-            itemRepository.findAll()
-                    .stream()
-                    .filter(item ->
-                            item.getName().toLowerCase().contains(text.toLowerCase()) |
-                                    item.getDescription().toLowerCase().contains(text.toLowerCase()))
-                    .filter(item -> String.valueOf(item.isAvailable()).equals("true"))
-                    .forEach(item -> itemsDto.add(ItemMapper.mapToDto(item)));
-            return itemsDto;
-        }
-    }
-
-
-    @Override
     public ItemDto createItem(Long owner, ItemDto itemDto) {
         validUser(owner);
         Item item = itemRepository.save(ItemMapper.mapToModel(owner, itemDto));
         return getItem(item.getId(), owner);
     }
+
+
+    @Override
+    public ItemDto patchItem(Long idItem, ItemDto itemDto, Long idUser) {
+        validUser(idUser);
+        validOwner(idItem, idUser);
+
+        Item item = itemRepository.getReferenceById(idItem);
+
+        if (itemDto.getName() != null) item.setName(itemDto.getName());
+        if (itemDto.getAvailable() != null) item.setAvailable(itemDto.getAvailable());
+        if (itemDto.getDescription() != null) item.setDescription(itemDto.getDescription());
+
+        itemRepository.save(item);
+
+        return getItem(idItem, idUser);
+    }
+
 
     @Override
     public ItemDto getItem(Long itemId, Long userId) {
@@ -82,8 +84,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getItemByUserId(Long id) {
-        return itemRepository.findAllByOwnerOrderByIdAsc(id)
+    public List<ItemDto> getItemByUserId(Long id, Integer from, Integer size) {
+        Pageable pageable = PageRequest.of(from / size, size);
+        return itemRepository.findAllByOwnerOrderByIdAsc(id, pageable)
                 .stream()
                 .map(item -> {
                     ItemDto itemDto = ItemMapper.mapToDto(item);
@@ -102,21 +105,21 @@ public class ItemServiceImpl implements ItemService {
                 .collect(Collectors.toList());
     }
 
-
     @Override
-    public ItemDto patchItem(Long idItem, ItemDto itemDto, Long idUser) {
-        validUser(idUser);
-        validOwner(idItem, idUser);
-
-        Item item = itemRepository.getReferenceById(idItem);
-
-        if (itemDto.getName() != null) item.setName(itemDto.getName());
-        if (itemDto.getAvailable() != null) item.setAvailable(itemDto.getAvailable());
-        if (itemDto.getDescription() != null) item.setDescription(itemDto.getDescription());
-
-        itemRepository.save(item);
-
-        return getItem(idItem, idUser);
+    public List<ItemDto> searchItemsByText(String text, Integer from, Integer size) {
+        if (text.isEmpty()) {
+            return new ArrayList<>();
+        } else {
+            List<ItemDto> itemsDto = new ArrayList<>();
+            itemRepository.findAll()
+                    .stream()
+                    .filter(item ->
+                            item.getName().toLowerCase().contains(text.toLowerCase()) |
+                                    item.getDescription().toLowerCase().contains(text.toLowerCase()))
+                    .filter(item -> String.valueOf(item.isAvailable()).equals("true"))
+                    .forEach(item -> itemsDto.add(ItemMapper.mapToDto(item)));
+            return itemsDto;
+        }
     }
 
     @Override
