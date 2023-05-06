@@ -18,7 +18,6 @@ import ru.practicum.shareit.user.dto.UserDto;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
-import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
